@@ -14,7 +14,7 @@ export default class Upload extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-    `sfdx chipp:data:files:upload -p ~/FilesToUpload.csv`,
+    `sfdx punk:data:files:upload -p ~/FilesToUpload.csv`,
   ];
 
   protected static flagsConfig = {
