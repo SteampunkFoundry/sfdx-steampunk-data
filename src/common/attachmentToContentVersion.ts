@@ -1,13 +1,12 @@
 import { Connection } from '@salesforce/core/lib/connection';
-import { ContentVersionCreateResult, ContentVersionCreateRequest, QueryResult, ContentVersion } from './typeDefinitions';
-import * as fs from 'fs-extra';
+import { Attachment, ContentVersion, ContentVersionCreateResult, ContentVersionCreateRequest, QueryResult } from './typeDefinitions';
 
-export async function fileToContentVersion(conn: Connection, filepath: string, name?: string, firstpublishlocationid?: string): Promise<ContentVersion> {
+export async function attachmentToContentVersion(conn: Connection, attachment: Attachment): Promise<ContentVersion> {
     const cvcr: ContentVersionCreateRequest = {
-        FirstPublishLocationId: firstpublishlocationid,
-        PathOnClient: filepath,
-        Title: name,
-        VersionData: fs.createReadStream(filepath)
+        FirstPublishLocationId: attachment.ParentId,
+        PathOnClient: `/${attachment.Name}`,
+        Title: attachment.Name,
+        VersionData: attachment.Body
     };
 
     // Build the multi-part form data to be passed to the Request

@@ -1,6 +1,6 @@
 import { core, flags, SfdxCommand } from "@salesforce/command";
 import { fileToContentVersion } from "../../../../common/fileToContentVersion";
-import { Record } from "../../../../common/typeDefinitions";
+import { ContentVersion } from "../../../../common/typeDefinitions";
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -90,7 +90,7 @@ export default class Upload extends SfdxCommand {
           file.PathOnClient,
           file.Title,
           file.FirstPublishLocationId
-        )) as Record;
+        )) as ContentVersion;
 
         file.ContentDocumentId = CV.ContentDocumentId;
         success.push(file);

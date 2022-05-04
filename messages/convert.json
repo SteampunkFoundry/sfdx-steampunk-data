@@ -1,5 +1,5 @@
 {
-  "commandDescription": "convert attachments to files based on a query",
-  "queryFlagDescription": "query to select attachments for conversion",
+  "commandDescription": "convert attachments to files based on criteria",
+  "criteriaFlagDescription": "criteria to select attachments for conversion",
   "errorNoOrgResults": "No results found for the org '%s'."
 }
