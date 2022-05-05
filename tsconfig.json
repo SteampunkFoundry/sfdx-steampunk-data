@@ -1,12 +1,9 @@
 {
-  "extends": "./node_modules/@salesforce/dev-config/tsconfig",
+  "extends": "@salesforce/dev-config/tsconfig",
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "./lib",
-    "importHelpers": true,
-    "rootDir": "./src"
+    "outDir": "lib",
+    "rootDir": "src",
+    "downlevelIteration": true
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*.ts"]
 }

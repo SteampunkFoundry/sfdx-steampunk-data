@@ -1,14 +1,15 @@
-import { core, flags, SfdxCommand } from "@salesforce/command";
+import { flags, SfdxCommand } from '@salesforce/command';
+import { Connection, Messages } from '@salesforce/core';
 import { fileToContentVersion } from "../../../../common/fileToContentVersion";
 import { ContentVersion } from "../../../../common/typeDefinitions";
 
 // Initialize Messages with the current plugin directory
-core.Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file.
 // Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = core.Messages.loadMessages('@steampunk/sfdx-steampunk-data', 'upload');
+const messages = Messages.loadMessages('@steampunk/sfdx-steampunk-data', 'upload');
 
 export default class Upload extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
