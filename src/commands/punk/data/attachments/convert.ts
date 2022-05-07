@@ -1,7 +1,7 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Connection, Messages } from '@salesforce/core';
+import { AttachmentToConvert, BasicRecord, ContentVersion } from "../../../../common/typeDefinitions";
 import { attachmentToContentVersion } from "../../../../common/attachmentToContentVersion";
-import { Attachment, ConvertedAttachment, ContentVersion } from "../../../../common/typeDefinitions";
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
@@ -29,10 +29,9 @@ export default class Convert extends SfdxCommand {
   protected static requiresUsername = true;
 
   private async retrieveAttachments(conn: Connection, criteria: string): Promise<any> {
-    const query = `SELECT Id, Name, Body, ContentType, Description, Name, OwnerId, ParentId FROM Attachment WHERE ${criteria}`;
-    const result = await conn.autoFetchQuery<ConvertedAttachment>(query, { autoFetch: true, maxFetch: 50000 });
-
-    return result;
+    const query = `SELECT Id, Name, Body, ContentType, Description, OwnerId, ParentId FROM Attachment WHERE ${criteria}`;
+    const queryResult = await conn.autoFetchQuery<AttachmentToConvert>(query, { autoFetch: true, maxFetch: 50000 });
+    return queryResult?.records ?? [];
   }
 
   public async run(): Promise<any> {
@@ -74,7 +73,7 @@ export default class Convert extends SfdxCommand {
     for (let [i, attachment] of attachments.entries()) {
       let success = [];
       let failure = [];
-      this.ux.startSpinner(`Loading file ${i + 1}`);
+      this.ux.startSpinner(`Loading file ${i + 1} of ${attachments.length}`);
       try {
         const CV = (await attachmentToContentVersion(
           conn,

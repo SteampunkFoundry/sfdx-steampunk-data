@@ -1,6 +1,6 @@
+import * as fs from 'fs-extra';
 import { Connection } from '@salesforce/core/lib/connection';
 import { ContentVersionCreateResult, ContentVersionCreateRequest, QueryResult, ContentVersion } from './typeDefinitions';
-import * as fs from 'fs-extra';
 
 export async function fileToContentVersion(conn: Connection, filepath: string, name?: string, firstpublishlocationid?: string): Promise<ContentVersion> {
     const cvcr: ContentVersionCreateRequest = {

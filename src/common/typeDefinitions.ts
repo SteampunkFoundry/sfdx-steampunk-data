@@ -10,7 +10,7 @@ interface Attachment extends BasicRecord {
   ParentId?: string;
 }
 
-interface ConvertedAttachment extends Attachment {
+interface AttachmentToConvert extends Attachment {
   ContentDocumentId: string;
   ContentVersionId: string;
 }
@@ -30,7 +30,6 @@ interface ContentVersionCreateRequest {
   FirstPublishLocationId?: string;
   PathOnClient: string;
   Title?: string;
-  VersionData: object
 }
 
 interface ContentVersionCreateResult {
@@ -50,7 +49,7 @@ interface QueryResult {
 export {
   BasicRecord,
   Attachment,
-  ConvertedAttachment,
+  AttachmentToConvert,
   ContentVersion,
   ContentDocument,
   ContentVersionCreateResult,
