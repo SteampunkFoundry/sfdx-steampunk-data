@@ -1,0 +1,11 @@
+{
+  "packageDirectories": [
+    {
+      "path": "sfdx-source/steampunk-sfdx-data",
+      "default": true
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "54.0"
+}
