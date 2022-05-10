@@ -1,4 +1,4 @@
-sfdx-steampunk-data
+@steampunk/sfdx-steampunk-data
 ===================
 
 Steampunk&#39;s SFDX Data Plugin
