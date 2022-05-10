@@ -18,7 +18,7 @@ $ npm install -g @steampunk/sfdx-steampunk-data
 $ sfdx COMMAND
 running command...
 $ sfdx (-v|--version|version)
-@steampunk/sfdx-steampunk-data/0.1.3 win32-x64 node-v16.7.0
+@steampunk/sfdx-steampunk-data/0.1.4 win32-x64 node-v16.7.0
 $ sfdx --help [COMMAND]
 USAGE
   $ sfdx COMMAND
@@ -65,5 +65,5 @@ EXAMPLE
       - FirstPublishLocationId
 ```
 
-_See code: [src/commands/punk/data/files/upload.ts](https://github.com/SteampunkFoundry/sfdx-steampunk-data/blob/v0.1.3/src/commands/punk/data/files/upload.ts)_
+_See code: [src/commands/punk/data/files/upload.ts](https://github.com/SteampunkFoundry/sfdx-steampunk-data/blob/v0.1.4/src/commands/punk/data/files/upload.ts)_
 <!-- commandsstop -->
