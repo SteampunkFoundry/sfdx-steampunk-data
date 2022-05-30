@@ -1,39 +1,41 @@
-
-import * as csv from 'csv-parser';
-import * as fs from 'fs-extra';
-import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages } from '@salesforce/core';
+import * as csv from "csv-parser";
+import * as fs from "fs-extra";
+import { Flags, SfCommand } from "@salesforce/sf-plugins-core";
+import { AuthInfo, Connection, Messages, Org, SfError } from "@salesforce/core";
 import { fileToContentVersion } from "../../../../common/fileToContentVersion";
 import { ContentVersion } from "../../../../common/typeDefinitions";
 
-// Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
+const messages = Messages.load("@steampunk/sfdx-steampunk-data", "upload", [
+  "description",
+  "filepath",
+  "noOrgResults",
+  "username",
+  "examples",
+]);
 
-// Load the specific messages for this file.
-// Messages from @salesforce/command, @salesforce/core,
-// or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages('@steampunk/sfdx-steampunk-data', 'upload');
+export default class Upload extends SfCommand<Any> {
+  public static description = messages.getMessage("description");
+  public static examples = [messages.getMessage("examples")];
 
-export default class Upload extends SfdxCommand {
-  public static description = messages.getMessage('commandDescription');
-
-  public static examples = [messages.getMessage('commandExamples')];
-
-  protected static flagsConfig = {
-    filepath: flags.filepath({
+  public static flags = {
+    username: Flags.string({
+      char: "u",
+      description: messages.getMessage("username"),
+      required: true,
+    }),
+    filepath: Flags.file({
       char: "f",
-      description: messages.getMessage('filepathFlagDescription'),
+      description: messages.getMessage("filepath"),
       required: true,
     }),
   };
 
-  protected static requiresUsername = true;
-
-  private async readFile(filePath: string): Promise<any> {
+  private async readFile(filepath: string): Promise<any> {
     let rows = [];
 
     return new Promise<any>((resolve) => {
-      fs.createReadStream(filePath)
+      fs.createReadStream(filepath)
         .pipe(csv())
         .on("data", (data) => {
           rows.push(data);
@@ -45,18 +47,15 @@ export default class Upload extends SfdxCommand {
   }
 
   public async run(): Promise<any> {
-    // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
-    const conn = this.org.getConnection();
+    const { flags } = await this.parse(Upload);
 
-    const csvFilePath = this.flags.filepath;
+    this.spinner.start("Reading CSV");
 
-    this.ux.startSpinner("Reading CSV");
+    let filesToUpload = await this.readFile(flags.filepath);
 
-    let filesToUpload = await this.readFile(csvFilePath);
+    this.spinner.stop();
 
-    this.ux.stopSpinner();
-
-    this.ux.startSpinner("Loading files");
+    this.spinner.start("Loading files");
 
     const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
@@ -76,14 +75,17 @@ export default class Upload extends SfdxCommand {
         { id: "PathOnClient", title: "PathOnClient" },
         { id: "Title", title: "Title" },
         { id: "FirstPublishLocationId", title: "FirstPublishLocationId" },
-        { id: "Error", title: "Error" }
+        { id: "Error", title: "Error" },
       ],
     });
+
+    const providedOrg = await Org.create({ aliasOrUsername: flags.username });
+    const conn = providedOrg.getConnection();
 
     for (let [i, file] of filesToUpload.entries()) {
       let success = [];
       let failure = [];
-      this.ux.startSpinner(`Loading file ${i + 1} of ${filesToUpload.length}`);
+      this.spinner.start(`Loading file ${i + 1} of ${filesToUpload.length}`);
       try {
         const CV = (await fileToContentVersion(
           conn,
@@ -100,7 +102,7 @@ export default class Upload extends SfdxCommand {
         failure.push(file);
         await errorWriter.writeRecords(failure);
       } finally {
-        this.ux.stopSpinner();
+        this.spinner.stop();
       }
     }
 

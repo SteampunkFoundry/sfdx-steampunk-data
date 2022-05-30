@@ -1,5 +1,5 @@
 import * as fs from 'fs-extra';
-import { Connection } from '@salesforce/core/lib/connection';
+import { Connection } from "@salesforce/core";
 import { ContentVersionCreateResult, ContentVersionCreateRequest, QueryResult, ContentVersion } from './typeDefinitions';
 
 export async function fileToContentVersion(conn: Connection, filepath: string, name?: string, firstpublishlocationid?: string): Promise<ContentVersion> {
@@ -30,6 +30,8 @@ export async function fileToContentVersion(conn: Connection, filepath: string, n
         method: 'POST'
     } as any)) as unknown) as ContentVersionCreateResult;
 
-    const result = (await conn.query(`SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id='${CV.id}'`)) as QueryResult;
+    console.log(CV);
+
+    const result = (await conn.singleRecordQuery(`SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id='${CV.id}'`)) as QueryResult;
     return result.records[0] as ContentVersion;
 }
