@@ -19,11 +19,7 @@ export default class Upload extends SfCommand<Any> {
   public static examples = [messages.getMessage("examples")];
 
   public static flags = {
-    username: Flags.string({
-      char: "u",
-      description: messages.getMessage("username"),
-      required: true,
-    }),
+    targetOrg: Flags.requiredOrg(),
     filepath: Flags.file({
       char: "f",
       description: messages.getMessage("filepath"),
@@ -79,8 +75,7 @@ export default class Upload extends SfCommand<Any> {
       ],
     });
 
-    const providedOrg = await Org.create({ aliasOrUsername: flags.username });
-    const conn = providedOrg.getConnection();
+    const conn = flags.targetOrg.getConnection();
 
     for (let [i, file] of filesToUpload.entries()) {
       let success = [];
