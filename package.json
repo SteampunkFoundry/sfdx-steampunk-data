@@ -26,9 +26,6 @@
     "devPlugins": [
       "@oclif/plugin-help"
     ],
-    "plugins": [
-      "@oclif/plugin-version"
-    ],
     "topics": {
       "punk:data": {
         "description": "Commands for working with data."
