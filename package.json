@@ -1,7 +1,7 @@
 {
   "name": "@steampunk/sfdx-steampunk-data",
   "description": "Steampunk's SFDX Data Plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Steampunk",
   "license": "MIT",
   "homepage": "https://github.com/SteampunkFoundry/sfdx-steampunk-data",
@@ -36,9 +36,6 @@
     }
   },
   "dependencies": {
-    "@oclif/core": "1.7.0",
-    "@salesforce/core": "^3.12.2",
-
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
     "@oclif/errors": "^1.3.5",
